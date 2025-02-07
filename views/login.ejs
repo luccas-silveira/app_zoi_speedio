@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Aplicação</title>
+  <!-- Link para o CSS -->
+  <link rel="stylesheet" href="/css/style-login.css">
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Login</h1>
+    <% if (messages.error) { %>
+      <%= messages.error %>
+    <% } %>
+    <!-- Define action e method no form -->
+    <form id="loginForm" action="/login" method="POST">
+      <div class="linha">
+        <label for="email-input">
+          <!-- SVG -->
+        </label>
+        <input type="text" name="email" id="email-input" placeholder="Email" class="campo-texto">
+      </div>
+      <div class="linha">
+        <label for="senha-input">
+          <!-- SVG -->
+        </label>
+        <!-- Altere o name para "password" ou configure o Passport para usar "senha" -->
+        <input type="password" name="password" id="senha-input" placeholder="Senha" class="campo-texto">
+      </div>
+      <button type="submit" class="botao-form">Login</button>
+    </form>
+    <p>Ainda não tem conta? <a href="/register">Registre-se</a></p>
+    <span id="message"></span>
+  </div>
+</body>
+</html>

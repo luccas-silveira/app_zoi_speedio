@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload de CSV com Drag and Drop</title>
+  <link rel="stylesheet" href="/css/style-login.css">
+  <style>
+    /* Área de upload centralizada */
+    .wrapper {
+      width: 100%;
+      max-width: 450px;
+      padding: 3rem;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      box-shadow: 0 0 6.875rem rgba(0, 0, 0, 0.6);
+      border-radius: 1.0625rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: opacity 0.5s ease-out;
+    }
+    /* Classe para transição de fade-out */
+    .fade-out {
+      opacity: 0;
+    }
+    /* Estilização da área de drop */
+    #drop-area {
+      border: 2px dashed rgba(255, 255, 255, 0.5);
+      border-radius: 0.625rem;
+      padding: 2rem;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+    #drop-area.hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    #drop-area p {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--text-color);
+    }
+    /* Esconde o input file padrão */
+    #csvfile {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+      <!-- Inclui o partial do menu/sidebar -->
+  <%- include('menu') %>
+  
+  <!-- Conteúdo da tela de busca -->
+  <div class="wrapper" id="uploadWrapper">
+    <h1>Upload de Planilha CSV</h1>
+    <!-- Formulário para envio do CSV (sem botão de submit) -->
+    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+      <div id="drop-area">
+        <p>Arraste e solte seu arquivo CSV aqui ou clique para selecionar</p>
+        <input type="file" name="csvfile" id="csvfile" accept=".csv" required>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('csvfile');
+    const form = document.getElementById('upload-form');
+    const uploadWrapper = document.getElementById('uploadWrapper');
+
+    // Previne o comportamento padrão de arrastar e soltar em toda a página
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // Adiciona a classe de "hover" quando o arquivo estiver sobre a área
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, () => dropArea.classList.add('hover'), false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, () => dropArea.classList.remove('hover'), false);
+    });
+
+    // Quando um arquivo for solto na área
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      let dt = e.dataTransfer;
+      let files = dt.files;
+      if(files.length > 0) {
+        fileInput.files = files;
+        submitForm();
+      }
+    }
+
+    // Permite que o clique na área abra o seletor de arquivos
+    dropArea.addEventListener('click', () => fileInput.click());
+
+    // Se o usuário selecionar o arquivo via o seletor (clique no input), também dispara a submissão
+    fileInput.addEventListener('change', () => {
+      if(fileInput.files.length > 0) {
+        submitForm();
+      }
+    });
+
+    // Função para aplicar transição e enviar o formulário
+    function submitForm() {
+      // Aplica a classe de fade-out
+      uploadWrapper.classList.add('fade-out');
+      // Aguarda o término da transição antes de submeter (0.5s)
+      setTimeout(() => {
+        form.submit();
+      }, 500);
+    }
+  </script>
+</body>
+</html>

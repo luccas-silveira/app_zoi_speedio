@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Aplicação</title>
+  <!-- Link para o CSS principal -->
+  <link rel="stylesheet" href="/css/style-login.css">
+  <style>
+    /* Se necessário, estilos adicionais para a tela de busca podem ser adicionados aqui */
+  </style>
+  <script type="text/javascript" src="/js/index.js" defer></script>
+</head>
+<body>
+  <!-- Inclui o partial do menu/sidebar -->
+  <%- include('menu') %>
+  
+  <!-- Conteúdo da tela de busca -->
+  <div class="wrapper">
+    <h1>Buscar CEPs</h1>
+    <div id="box-credit-card-info">
+      <form action="/buscar" method="GET">
+        <div class="linha">
+          <label for="cidade">
+            <!-- Aqui pode ir um SVG ou ícone, se houver -->
+          </label>
+          <input type="text" class="credit-card-input" placeholder="Cidade" id="cidade" name="cidade">
+        </div>
+        <div class="linha">
+          <label for="estado">
+            <!-- Ícone ou SVG, se houver -->
+          </label>
+          <input type="text" class="credit-card-input" placeholder="Estado" id="estado" name="estado">
+        </div>
+        <div class="linha">
+          <label for="contendo">
+            <!-- Ícone ou SVG, se houver -->
+          </label>
+          <input type="text" class="credit-card-input" placeholder="Contendo" id="contendo" name="contendo">
+        </div>
+      </form>
+      <span id="message"></span>
+    </div>
+    <input class="styled" type="button" value="Buscar" id="send"/>
+    <input class="styled" type="button" value="Download" id="download" style="display: none;">
+  </div>
+</body>
+</html>

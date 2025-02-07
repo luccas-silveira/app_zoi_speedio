@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conteúdo do CSV</title>
+  <link rel="stylesheet" href="/css/style-login.css">
+  <style>
+    /* Animação de Fade In */
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Cabeçalho fixo com controles */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 1rem; /* Mais espaço vertical */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 100;
+    }
+    .header .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    /* Estilização dos switches */
+    .switch-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #7d7d7d4d;
+      border-color: (139, 139, 139);;
+      border-width: 1px;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: rgba(0, 0, 0, 0.077);
+      border-color: rgb(139, 139, 139);
+      border-width: 1px;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #cacaca;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+      background-color: rgb(0, 0, 0);
+    }
+    /* Labels dos switches */
+    #switchLabel,
+    #splitSwitchLabel {
+      font-size: 1rem;
+      color: var(--text-color);
+      user-select: none;
+    }
+    /* Botão de novo upload */
+    .button-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .button-group a.styled,
+    .button-group button.styled {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.077);
+      border: 1px solid rgba(255, 255, 255, 0.077);
+      border-radius: 0.625rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: transform 500ms ease-out, box-shadow 500ms ease-out, background-color 500ms ease-out;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+    .button-group a.styled:hover,
+    .button-group button.styled:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 0.9375rem rgb(0, 0, 0);
+      background-color: var(--text-color);
+      color: #0c0c0c;
+      
+    }
+    /* Container para o conteúdo (tabela) – com espaço para o cabeçalho fixo */
+    .content {
+      margin-top: 135px; /* Espaço para o cabeçalho fixo */
+      margin-right:7.5%;
+      width: 85%;
+      height: 90%;
+      padding-bottom: 135px;
+      overflow-y: auto;
+      max-height: calc(100vh - 80px);
+    }
+    /* Oculta a scrollbar no Chrome, Safari e Opera */
+    table::-webkit-scrollbar {
+      display: none;
+    }
+    
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      height: 70%;
+      table-layout:auto;
+    }
+    /* Oculta a scrollbar no Chrome, Safari e Opera */
+    table::-webkit-scrollbar {
+      display: none;
+    }
+    .cell-content {
+      max-height: 60px;
+      overflow: auto;
+      /* Caso prefira ocultar o excesso sem scroll, use:
+      overflow: hidden; */
+    }
+
+    /* Oculta a scrollbar no Chrome, Safari e Opera */
+    .cell-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Para o Firefox */
+    .cell-content {
+      scrollbar-width: none; /* Firefox */
+    }
+
+    /* Para o Internet Explorer 10+ */
+    .cell-content {
+      -ms-overflow-style: none; /* IE 10+ */
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-width: 100px;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f020;
+      font-weight: 600;
+      font-size: 0.8rem; /* Tamanho da fonte para os cabeçalhos */
+    }
+    td {
+     font-size: 0.8rem; /* Tamanho da fonte para as células */
+    }
+    h1 {
+      display: none;
+    }
+  </style>
+</head>
+<body class="fade-in">
+      <!-- Inclui o partial do menu/sidebar -->
+  <%- include('menu') %>
+  
+  <!-- Conteúdo da tela de busca -->
+  <!-- Cabeçalho fixo com controles -->
+  <div class="header">
+    <div class="controls">
+      <div class="switch-container">
+        <label class="switch">
+          <input type="checkbox" id="toggleFilterSwitch">
+          <span class="slider"></span>
+        </label>
+        <span id="switchLabel">Apenas celulares</span>
+      </div>
+      <div class="switch-container">
+        <label class="switch">
+          <input type="checkbox" id="toggleSplitSwitch">
+          <span class="slider"></span>
+        </label>
+        <span id="splitSwitchLabel">Um número por linha</span>
+      </div>
+      <div class="button-group">
+        <button class="styled" id="downloadButton">Baixar CSV</button>
+        <a href="/upload" class="styled">Fazer novo upload</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Área de conteúdo com a tabela -->
+  <div class="content">
+    <table id="csvTable">
+      <thead>
+        <tr>
+          <% if (data && data.length > 0) { %>
+            <% Object.keys(data[0]).forEach(function(header) { %>
+              <th><%= header %></th>
+            <% }); %>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (data && data.length > 0) { %>
+          <% data.forEach(function(row) { %>
+            <tr>
+              <% Object.values(row).forEach(function(value) { %>
+                <td>
+                  <div class="cell-content"><%= value %></div>
+                </td>
+              <% }); %>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="100%">Nenhum dado encontrado no CSV.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+  
+  <script>
+    // Variáveis para controlar os estados dos switches
+    let filterApplied = false;
+    let splitApplied = false;
+    // Guarda o conteúdo original do <tbody>
+    const tbody = document.querySelector('#csvTable tbody');
+    const originalTableHTML = tbody.innerHTML;
+
+    // Função para aplicar o filtro "Apenas celulares" na coluna de telefones (índice 5)
+    function applyFilter() {
+      const rows = Array.from(document.querySelectorAll('#csvTable tbody tr'));
+      rows.forEach((row) => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 6) {
+          let cell = cells[5];
+          if (cell && cell.textContent.trim() !== "") {
+            let numbers = cell.textContent.split(',').map(num => num.trim());
+            let filteredNumbers = numbers.filter(number => {
+              let cleanNumber = number.replace(/\D/g, '');
+              return (cleanNumber.length >= 3 && cleanNumber.charAt(2) === '9');
+            });
+            if (filteredNumbers.length === 0) {
+              row.remove();  // Remove a linha se a célula ficar vazia após o filtro
+            } else {
+              cell.textContent = filteredNumbers.join(', ');
+            }
+          } else {
+            row.remove();
+          }
+        }
+      });
+    }
+
+    // Função para aplicar o filtro "Um número por linha"
+    function applySplit() {
+      const rows = Array.from(document.querySelectorAll('#csvTable tbody tr'));
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 6) {
+          let cell = cells[5];
+          if (cell && cell.textContent.trim() !== "") {
+            let numbers = cell.textContent.split(',').map(num => num.trim());
+            if (numbers.length > 1) {
+              // Guarda os conteúdos das outras células
+              const cellContents = Array.from(row.querySelectorAll('td')).map((td, index) => {
+                return { index: index, html: td.innerHTML };
+              });
+              row.remove();
+              // Cria uma nova linha para cada número
+              numbers.forEach(num => {
+                let newRow = document.createElement('tr');
+                cellContents.forEach(cellData => {
+                  let newCell = document.createElement('td');
+                  if (cellData.index === 5) {
+                    newCell.textContent = num;
+                  } else {
+                    newCell.innerHTML = cellData.html;
+                  }
+                  newRow.appendChild(newCell);
+                });
+                tbody.appendChild(newRow);
+              });
+            }
+          }
+        }
+      });
+    }
+
+    // Função que restaura a tabela original e aplica os filtros conforme os estados
+    function updateTable() {
+      tbody.innerHTML = originalTableHTML;
+      if (filterApplied) {
+        applyFilter();
+      }
+      if (splitApplied) {
+        applySplit();
+      }
+    }
+
+    // Funções de toggle para os switches
+    function toggleFilter() {
+      filterApplied = !filterApplied;
+      updateTable();
+    }
+
+    function toggleSplit() {
+      splitApplied = !splitApplied;
+      updateTable();
+    }
+
+    // Função para gerar e baixar o CSV a partir da tabela atual
+    function downloadCSV() {
+      const rows = document.querySelectorAll("#csvTable tr");
+      let csvContent = [];
+      rows.forEach(row => {
+        let rowData = [];
+        // Seleciona tanto <th> quanto <td>
+        const cols = row.querySelectorAll("th, td");
+        cols.forEach(col => {
+          let data = col.innerText.replace(/"/g, '""');
+          rowData.push(`"${data}"`);
+        });
+        csvContent.push(rowData.join(","));
+      });
+      const csvString = csvContent.join("\n");
+      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "planilha_filtrada.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Associa os event listeners assim que o DOM estiver carregado
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById('toggleFilterSwitch').addEventListener('change', toggleFilter);
+      document.getElementById('toggleSplitSwitch').addEventListener('change', toggleSplit);
+      document.getElementById('downloadButton').addEventListener('click', downloadCSV);
+    });
+  </script>
+</body>
+</html>

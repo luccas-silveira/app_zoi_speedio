@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  --accent-color: white;
+  --base-color: #ffffff;
+  --text-color: #ededed;
+  --input-color: #F3F0FF;
+}
+
+/* Reset e box-sizing */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Poppins, Montserrat, Lexend, Helvetica, sans-serif;
+  font-size: 1rem; /* Base para escalabilidade */
+  color: var(--text-color);
+  text-align: center;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Conteúdo à direita */
+  padding: 0 1.25rem;
+  background: url('https://storage.googleapis.com/msgsndr/Xb9gDxwxYhdqtprGcb5E/media/67a2d700b1b7b26b25bc0073.jpeg') center/cover no-repeat;
+  overflow: hidden;
+}
+
+/* Container principal */
+.wrapper {
+  width: 100%;
+  max-width: 450px;
+  padding: 3rem;
+  margin: auto;
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  box-shadow: 0 0 6.875rem rgba(0, 0, 0, 0.6);
+  border-radius: 1.0625rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+h1 {
+  font-size: 2.9rem;
+  font-weight: 450;
+  font-stretch: semi-expanded;
+  margin-bottom: 1.5rem;
+}
+
+/* Formulário e seus elementos */
+form {
+  width: 100%;
+  max-width: 630px;
+  margin: 1.875rem auto;
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+form > div {
+  width: 100%;
+  max-width: 630px;
+  display: flex;
+  justify-content: center;
+  border-radius: 0.625rem;
+  margin: 0.6875rem auto;
+}
+
+form label {
+  flex-shrink: 0;
+  height: 3.75rem;
+  width: 3.75rem;
+  background: rgba(0, 0, 0, 0.356);
+  border-radius: 0.625rem 0 0 0.625rem;
+  box-shadow: 0 0.25rem 1.875rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9.4px);
+  -webkit-backdrop-filter: blur(9.4px);
+  border: 1px solid rgba(122, 122, 122, 0.34);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+form input {
+  flex-grow: 1;
+  height: 3.75rem;
+  width: 100%;
+  padding: 1rem;
+  font: inherit;
+  color: #ededed;
+  border-radius: 0 0.625rem 0.625rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.077);
+  border-left: none;
+  background: rgba(255, 255, 255, 0.077);
+}
+
+/* Efeitos de transição */
+.linha {
+  transition: transform 500ms ease-out, box-shadow 500ms ease-out, border-radius 500ms ease-out;
+}
+.linha:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 1.25rem rgb(0, 0, 0);
+  border-radius: 0.6875rem;
+}
+.error {
+  box-shadow: 0 0 1.875rem rgba(255, 1, 1, 0.872);
+  border-radius: 0.6875rem;
+}
+
+form button,
+.styled {
+  border: none;
+  border-radius: 0.625rem;
+  width: 100%;
+  max-width: 625px;
+  height: 3.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.077);
+  border-left: none;
+  background: rgba(255, 255, 255, 0.077);
+  font: inherit;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 500ms ease-out, box-shadow 500ms ease-out, border-radius 500ms ease-out, background-color 500ms ease-out;
+  margin-top: 1.25rem;
+}
+
+form button:hover,
+.styled:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 0.9375rem rgb(0, 0, 0);
+  border-radius: 0.6875rem;
+  background-color: var(--text-color);
+}
+
+/* Media Queries */
+
+/* Para telas até 1024px */
+@media (max-width: 1024px) {
+  html {
+    font-size: 0.9375rem;
+  }
+  
+  .wrapper {
+    padding: 2.5rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  form label,
+  form input,
+  form button,
+  .styled {
+    height: 3.25rem;
+  }
+  
+  form label {
+    width: 3.25rem;
+    font-size: 1.3rem;
+  }
+}
+
+/* Para telas até 768px */
+@media (max-width: 768px) {
+  html {
+    font-size: 0.875rem;
+  }
+  
+  .wrapper {
+    padding: 2rem;
+  }
+  
+  h1 {
+    font-size: 2.25rem;
+  }
+  
+  form {
+    gap: 0.5rem;
+  }
+  
+  form label,
+  form input,
+  form button,
+  .styled {
+    height: 3rem;
+  }
+  
+  form label {
+    width: 3rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Para telas até 480px */
+@media (max-width: 480px) {
+  html {
+    font-size: 0.8125rem;
+  }
+  
+  .wrapper {
+    padding: 1.5rem;
+    form > div {
+      max-width: 100%;
+      padding: 0 1rem; /* Opcional: para evitar que o conteúdo encoste nas bordas */
+    }
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  form {
+    gap: 0.5rem;
+  }
+  
+  form label,
+  form input,
+  form button,
+  .styled {
+    height: 2.75rem;
+  }
+  
+  form label {
+    width: 2.75rem;
+    font-size: 1.1rem;
+  }
+}

@@ -1,0 +1,85 @@
+<!-- views/menu.ejs -->
+<div class="sidebar" id="sidebar">
+    <!-- Puxador (handle) integrado -->
+    <div class="sidebar-handle" id="sidebarHandle">
+      <img src="/images/menu-icon.svg" alt="Menu">
+    </div>
+    <ul>
+      <li><a href="/">Fazer busca</a></li>
+      <li><a href="/upload">Subir planílha</a></li>
+      <li><a href="#">Configurações</a></li>
+      <li><a href="#">Meu usuário</a></li>
+    </ul>
+  </div>
+  
+  <style>
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -220px; /* Quando fechado, deixa 30px visíveis */
+      width: 250px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      transition: left 0.3s ease-out;
+      padding: 1.5rem 1rem;
+      z-index: 1000;
+      text-align: left;
+      border: none;
+    }
+    .sidebar.show {
+      left: 0;
+    }
+    .sidebar-handle {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+    .sidebar-handle img {
+      width: 100%;
+      height: 100%;
+    }
+    .sidebar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      margin-top: 2rem;
+    }
+    .sidebar ul li {
+      margin: 1rem 0;
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+    .sidebar ul li a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .sidebar ul li a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function(){
+      const sidebar = document.getElementById("sidebar");
+      const sidebarHandle = document.getElementById("sidebarHandle");
+  
+      sidebarHandle.addEventListener("click", function(e){
+        sidebar.classList.toggle("show");
+        e.stopPropagation();
+      });
+  
+      document.addEventListener("click", function(e) {
+        if (!sidebar.contains(e.target) && !sidebarHandle.contains(e.target)) {
+          sidebar.classList.remove("show");
+        }
+      });
+    });
+  </script>
